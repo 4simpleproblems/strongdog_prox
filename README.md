@@ -1,8 +1,6 @@
 # strongdog_prox
 
-This is a test project to demonstrate the injection of games from `cards-data.js` using `strongdog.com` as the base URL.
-
-This project is a modified version of the `4sp-max/logged-in/games.html` file, adapted to use `strongdog.com` for all game and image assets.
+This project now supports a fallback mechanism for games and images. By default, it uses `strongdog.com` as the base URL. For games tagged with `source: 'dv-service-lfs'` in `cards-data.js`, it will use `dv-service-lfs.4simpleproblems.workers.dev` as the base URL.
 
 ## How to use
 
