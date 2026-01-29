@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>strongdog_prox</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        #games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .game-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+        }
+        .game-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .game-card .title {
+            padding: 10px;
+            font-weight: bold;
+        }
+        .game-card a {
+            display: block;
+            text-decoration: none;
+            color: #ffffff;
+            padding: 10px;
+            background-color: #333;
+        }
+        .game-card a:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>strongdog_prox</h1>
+    <div id="games-container"></div>
+
+    <script type="module">
+        import cardsData from './cards-data.js';
+
+        const gamesContainer = document.getElementById('games-container');
+
+        function getBaseURLForPage(page) {
+            if (page > 1) {
+                return `https://strongdog.com/strongdog${page}/`;
+            }
+            return 'https://strongdog.com/GAMES/';
+        }
+
+        cardsData.forEach(game => {
+            const gameCard = document.createElement('div');
+            gameCard.classList.add('game-card');
+
+            const baseURL = getBaseURLForPage(game.page);
+            const proxiedBaseURL = `https://corsproxy.io/?${baseURL}`;
+            const gameURL = new URL(game.href.replace('./', ''), proxiedBaseURL).href;
+            const imageURL = new URL('img/' + game.imgSrc, proxiedBaseURL).href;
+
+            gameCard.innerHTML = `
+                <img src="${imageURL}" alt="${game.name}">
+                <div class="title">${game.name}</div>
+                <a href="${gameURL}" target="_blank">Play</a>
+            `;
+
+            gamesContainer.appendChild(gameCard);
+        });
+    </script>
+</body>
+</html>
